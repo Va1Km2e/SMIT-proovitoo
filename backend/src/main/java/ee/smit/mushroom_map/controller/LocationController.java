@@ -30,7 +30,6 @@ public class LocationController {
 
     @GetMapping
     public GeoJsonFeatureCollectionDTO getAll() {
-        System.out.print("✅ Serving GeoJSON from controller!");
         return locationService.getAllAsGeoJson();
     }
 
@@ -41,7 +40,7 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
-    public LocationDTO update(@PathVariable Long id, @Valid @RequestBody LocationDTO dto) {
+    public GeoJsonFeatureDTO update(@PathVariable Long id, @Valid @RequestBody LocationDTO dto) {
         return locationService.updateLocation(id, dto);
     }
 }

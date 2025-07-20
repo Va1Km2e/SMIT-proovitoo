@@ -25,9 +25,14 @@ public class LocationService {
     private final LocationMapper locationMapper;
 
     /**
-     * Gets all the mushroom locations from the database.
+     * Gets all the mushroom locations from the database and returns them as a GeoJSON FeatureCollection.
      *
-     * @return A list of all mushroom locations, converted to the API-friendly format.
+     * NOTE: As per the task requirements, this endpoint currently returns all locations from the database
+     * in a single request. In a real-world production application with a large dataset, this approach
+     * would lead to performance issues and potential OutOfMemoryErrors. To make this scalable,
+     * it should be refactored.
+     *
+     * @return A GeoJsonFeatureCollectionDTO containing all mushroom locations.
      */
     public GeoJsonFeatureCollectionDTO getAllAsGeoJson() {
         List<LocationDTO> locations = getAllLocations();
@@ -85,13 +90,17 @@ public class LocationService {
      * @return The updated location.
      * @throws ResourceNotFoundException if no location with the given ID is found.
      */
-    public LocationDTO updateLocation(Long id, LocationDTO dto) {
+    public GeoJsonFeatureDTO updateLocation(Long id, LocationDTO dto) {
         LocationEntity entity = locationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Location with ID " + id + " not found")); // MUUDETUD RIDA
+                .orElseThrow(() -> new ResourceNotFoundException("Location with ID " + id + " not found"));
 
         entity.setDescription(dto.getDescription());
         entity.setGeom(GeoJsonUtil.convertToPoint(dto.getLocation()));
 
-        return locationMapper.toDTO(locationRepository.save(entity));
+        LocationEntity updatedEntity = locationRepository.save(entity);
+
+        LocationDTO updatedDto = locationMapper.toDTO(updatedEntity);
+
+        return locationMapper.toGeoJsonFeature(updatedDto);
     }
 }
