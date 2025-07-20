@@ -2,6 +2,6 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE TABLE IF NOT EXISTS location (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(200) NOT NULL,
+  description VARCHAR(200) NOT NULL,
   geom geometry(Point, 4326)
 );

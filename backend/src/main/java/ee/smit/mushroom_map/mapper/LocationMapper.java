@@ -1,9 +1,12 @@
 package ee.smit.mushroom_map.mapper;
 
+import ee.smit.mushroom_map.dto.GeoJsonFeatureDTO;
 import ee.smit.mushroom_map.dto.LocationDTO;
 import ee.smit.mushroom_map.entity.LocationEntity;
 import org.springframework.stereotype.Component;
 import ee.smit.mushroom_map.util.GeoJsonUtil;
+
+import java.util.Map;
 
 
 /**
@@ -40,5 +43,18 @@ public class LocationMapper {
                 .description(dto.getDescription())
                 .geom(GeoJsonUtil.convertToPoint(dto.getLocation()))
                 .build();
+    }
+
+    public GeoJsonFeatureDTO toGeoJsonFeature(LocationDTO locationDTO) {
+        GeoJsonFeatureDTO featureDTO = new GeoJsonFeatureDTO();
+        featureDTO.setGeometry(locationDTO.getLocation());
+
+        GeoJsonFeatureDTO.Properties props = new GeoJsonFeatureDTO.Properties();
+        props.setId(locationDTO.getId());
+        props.setDescription(locationDTO.getDescription());
+
+        featureDTO.setProperties(props);
+        featureDTO.setType("Feature");
+        return featureDTO;
     }
 }
