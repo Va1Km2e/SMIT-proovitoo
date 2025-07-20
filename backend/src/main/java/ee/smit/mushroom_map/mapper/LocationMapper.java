@@ -3,6 +3,7 @@ package ee.smit.mushroom_map.mapper;
 import ee.smit.mushroom_map.dto.GeoJsonFeatureDTO;
 import ee.smit.mushroom_map.dto.LocationDTO;
 import ee.smit.mushroom_map.entity.LocationEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ee.smit.mushroom_map.util.GeoJsonUtil;
 
@@ -14,7 +15,10 @@ import java.util.Map;
  * and the format we use for sending data over the API (LocationDTO).
  */
 @Component
+@RequiredArgsConstructor
 public class LocationMapper {
+
+    private final GeoJsonUtil geoJsonUtil;
 
     /**
      * Converts a database entity (LocationEntity) into an API data object (LocationDTO).
@@ -27,7 +31,7 @@ public class LocationMapper {
         return LocationDTO.builder()
                 .id(entity.getId())
                 .description(entity.getDescription())
-                .location(GeoJsonUtil.convertToGeoJson(entity.getGeom()))
+                .location(geoJsonUtil.convertToGeoJson(entity.getGeom()))
                 .build();
     }
 
@@ -41,7 +45,7 @@ public class LocationMapper {
     public LocationEntity toEntity(LocationDTO dto) {
         return LocationEntity.builder()
                 .description(dto.getDescription())
-                .geom(GeoJsonUtil.convertToPoint(dto.getLocation()))
+                .geom(geoJsonUtil.convertToPoint(dto.getLocation()))
                 .build();
     }
 
@@ -55,6 +59,27 @@ public class LocationMapper {
 
         featureDTO.setProperties(props);
         featureDTO.setType("Feature");
+        return featureDTO;
+    }
+
+    /**
+     * Converts a LocationEntity directly to a GeoJsonFeatureDTO.
+     * This avoids the unnecessary creation of an intermediate LocationDTO.
+     *
+     * @param entity The database entity.
+     * @return The GeoJSON Feature DTO.
+     */
+    public GeoJsonFeatureDTO entityToGeoJsonFeature(LocationEntity entity) {
+        GeoJsonFeatureDTO featureDTO = new GeoJsonFeatureDTO();
+        featureDTO.setType("Feature");
+
+        featureDTO.setGeometry(geoJsonUtil.convertToGeoJson(entity.getGeom()));
+
+        GeoJsonFeatureDTO.Properties props = new GeoJsonFeatureDTO.Properties();
+        props.setId(entity.getId());
+        props.setDescription(entity.getDescription());
+        featureDTO.setProperties(props);
+
         return featureDTO;
     }
 }

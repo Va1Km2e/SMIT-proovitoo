@@ -23,6 +23,7 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
+    private final GeoJsonUtil geoJsonUtil;
 
     /**
      * Gets all the mushroom locations from the database and returns them as a GeoJSON FeatureCollection.
@@ -95,12 +96,10 @@ public class LocationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Location with ID " + id + " not found"));
 
         entity.setDescription(dto.getDescription());
-        entity.setGeom(GeoJsonUtil.convertToPoint(dto.getLocation()));
+        entity.setGeom(geoJsonUtil.convertToPoint(dto.getLocation()));
 
         LocationEntity updatedEntity = locationRepository.save(entity);
 
-        LocationDTO updatedDto = locationMapper.toDTO(updatedEntity);
-
-        return locationMapper.toGeoJsonFeature(updatedDto);
+        return locationMapper.entityToGeoJsonFeature(updatedEntity);
     }
 }

@@ -6,6 +6,7 @@ import ee.smit.mushroom_map.dto.LocationDTO;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * It helps us switch between the GeoJSON format (used by our API)
  * and the JTS Point format (used internally for spatial operations).
  */
+@Component
 public class GeoJsonUtil {
 
     private static final GeometryFactory geometryFactory = new GeometryFactory();
@@ -26,7 +28,7 @@ public class GeoJsonUtil {
      * @return A JTS Point object representing the same geographical coordinates.
      * @throws IllegalArgumentException if the input GeoJSON is not a valid Point format.
      */
-    public static Point convertToPoint(GeoJsonPointDTO geoJson) {
+    public Point convertToPoint(GeoJsonPointDTO geoJson) {
         if (!"Point".equals(geoJson.getType()) || geoJson.getCoordinates().size() != 2) {
             throw new IllegalArgumentException("Invalid GeoJSON Point format");
         }
@@ -43,7 +45,7 @@ public class GeoJsonUtil {
      * @param point The JTS Point object.
      * @return A GeoJSON Point DTO representing the same geographical coordinates.
      */
-    public static GeoJsonPointDTO convertToGeoJson(Point point) {
+    public GeoJsonPointDTO convertToGeoJson(Point point) {
         GeoJsonPointDTO dto = new GeoJsonPointDTO();
         dto.setType("Point"); // IMPORTANT: Added this line to ensure GeoJSON compliance
         dto.setCoordinates(Arrays.asList(point.getX(), point.getY()));
