@@ -1,15 +1,12 @@
 package ee.smit.mushroom_map.util;
 
-import ee.smit.mushroom_map.dto.GeoJsonFeatureDTO;
 import ee.smit.mushroom_map.dto.GeoJsonPointDTO;
-import ee.smit.mushroom_map.dto.LocationDTO;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * This is a helper class for converting geographical point data.

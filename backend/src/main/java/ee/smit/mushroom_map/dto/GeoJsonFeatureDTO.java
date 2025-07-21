@@ -3,8 +3,6 @@ package ee.smit.mushroom_map.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.util.Map;
-
 /**
  * Represents a GeoJSON Feature.
  * A Feature contains a geometry and associated properties.

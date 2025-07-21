@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ee.smit.mushroom_map.util.GeoJsonUtil;
 
-import java.util.Map;
-
-
 /**
  * This class helps convert between our database format (LocationEntity)
  * and the format we use for sending data over the API (LocationDTO).
