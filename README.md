@@ -44,7 +44,7 @@ gradlew build
 # 3. Liigu tagasi projekti baaskausta ja käivita rakendus Docker Compose abil:
 ```bash
 cd ..
-docker-compose up --build
+docker compose up --build
 ```
 # 4. Kontrolli, kas konteinerid töötavad:
 ```bash
