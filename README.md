@@ -52,5 +52,5 @@ docker ps
 ```
 # 5. Kui soovid konteinerid peatada:
 ```bash
-docker-compose down
+docker compose down
 ```
